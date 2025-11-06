@@ -1,27 +1,75 @@
+import { Linter } from "eslint";
 import "./hero.css";
 import Speech from "./Speech";
+import { m, motion } from "motion/react";
+
+const awardVariants = {
+    initial: {
+        x: -100,
+        opacity: 0,
+    },
+    animate: {
+        x: 0,
+        opacity: 1,
+        transition: {
+            duration: 1,
+            staggerChildren: 0.2,
+        }
+    }
+}
+
+const followVariants ={
+    initial:{
+        y: -100,
+        opacity:0,
+    },
+    animate:{
+        y: 0,
+        opacity:1,
+        transition:{
+            duration:1,
+            staggerChildren:0.2,
+        }
+    }
+}
+
 
 const Hero = () => {
     return (
         <div className="hero">
             <div className="hSection left">
-                <h1 className="hTitle">
+                <motion.h1
+                    initial={{ y: -100, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 1 }}
+                    className="hTitle">
                     Olá a Todos,
                     <br />
                     <span>Eu sou David</span>
-                </h1>
-                <div className="awards">
-                    <h2>Desenvolvedor bem avaliado</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipsicing elit.</p>
+                </motion.h1>
+                <motion.div
+                    variants={awardVariants}
+                    initial="initial"
+                    animate="animate"
+                    className="awards">
+                    <motion.h2 variants={awardVariants}>Desenvolvedor bem avaliado</motion.h2>
+                    <motion.p variants={awardVariants}>Lorem ipsum dolor sit amet, consectetur adipsicing elit.</motion.p>
 
-                    <div className="awardList">
-                        <img src="/award1.png" alt="" />
-                        <img src="/award2.png" alt="" />
-                        <img src="/award3.png" alt="" />
-                    </div>
-                </div>
+                    <motion.div variants={awardVariants} className="awardList">
+                        <motion.img variants={awardVariants} src="/award1.png" alt="" />
+                        <motion.img variants={awardVariants} src="/award2.png" alt="" />
+                        <motion.img variants={awardVariants} src="/award3.png" alt="" />
+                    </motion.div>
+                </motion.div>
 
-                <a href="#services" className="scroll">
+                <motion.a
+                    animate={{ y: [0, 5], opacity: [0, 1, 0] }}
+                    transition={{
+                        repeat: Infinity,
+                        duration: 4,
+                        ease: "easeInOut",
+                    }}
+                    href="#services" className="scroll">
                     <svg
                         width="50px"
                         height="50px"
@@ -34,85 +82,108 @@ const Hero = () => {
                             stroke="white"
                             strokeWidth="1"
                         />
-                        <path
+                        <motion.path
+                            animate={{ y: [0, 5] }}
+                            transition={{
+                                repeat: Infinity,
+                                duration: 4,
+                                ease: "easeInOut",
+                            }}
                             d="M12 5V8"
                             stroke="white"
                             strokeWidth="1"
                             stroneLinecap="round"
                         />
                     </svg>
-                </a>
+                </motion.a>
             </div>
 
             <div className="hSection right">
-                <div className="follow">
-                    <a href="/">
+                <motion.div 
+                variants={followVariants}
+                initial="initial"
+                animate = "animate"
+                className="follow">
+                    <motion.a variants={followVariants} href="/">
                         <img src="/instagram.png" alt="" />
-                    </a>
+                    </motion.a>
 
-                    <a href="/">
+                    <motion.a variants={followVariants} href="/">
                         <img src="facebook.png" alt="" />
-                    </a>
+                    </motion.a>
 
-                    <a href="/">
+                    <motion.a variants={followVariants} href="/">
                         <img src="/youtube.png" alt="" />
-                    </a>
-                    <div className="followTextContainer">
+                    </motion.a>
+                    <motion.div variants={followVariants} className="followTextContainer">
                         <div className="followText">ME SIGA</div>
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
 
-            <Speech/>
+                <Speech />
 
-            <div className="certificate">
-                <img src="/certificate.png" alt=""/>
-                CERTIFICADO HERO <br/>
-                DESENVOLVEDOR WEB<br/>
-                PROFISSIONAL
-            </div>
+                <motion.div 
+                animate={{opacity:[0,1]}}
+                transition={{ duration: 1}}
+                className="certificate">
+                    <img src="/certificate.png" alt="" />
+                    CERTIFICADO HERO <br />
+                    DESENVOLVEDOR WEB<br />
+                    PROFISSIONAL
+                </motion.div>
 
-            <a href="/#contact" className="contactLink">
-                <div className="contactButton">
-                    <svg viewBox ="0 0 200 200" width="150" height="150">
-                        <circle cx="100" cy="100" r="90" fill="pink"/>
+                <motion.a 
+                animate={{x:[200,0], opacity:[0,1],}}
+                transition={{duration:2}}
+                href="/#contact" className="contactLink">
+                    <motion.div
+                    animate={{rotate: [0, 360]}}
+                    transition={{
+                        duration:10,
+                        repeat: Infinity,
+                        ease:"linear",
+                    }}
+                    className="contactButton">
+                        <svg viewBox="0 0 200 200" width="150" height="150">
+                            <circle cx="100" cy="100" r="90" fill="pink" />
 
-                        <path
-                            id="innerCirclePath"
-                            fill="none"
-                            d="M 100, 100 m -60, a 60, 60 0 1, 1 120,0 a 60, 60 0 1, 1 -120,0"
-                        />
+                            <path
+                                id="innerCirclePath"
+                                fill="none"
+                                d="M 100, 100 m -60, a 60, 60 0 1, 1 120,0 a 60, 60 0 1, 1 -120,0"
+                            />
 
-                        <text className="circleText">
-                            <textPath href ="#innerCirclePath">Contrate Agora •</textPath>
-                        </text>
-                          <text className="circleText">
-                            <textPath href ="#innerCirclePath" startOffset="45%">Entre em contato •</textPath>
-                        </text>
-                   
-                    </svg>
+                            <text className="circleText">
+                                <textPath href="#innerCirclePath">Contrate Agora •</textPath>
+                            </text>
+                            <text className="circleText">
+                                <textPath href="#innerCirclePath" startOffset="45%">Entre em contato •</textPath>
+                            </text>
 
-                <div className="arrow">
-                    <svg
-                        xmlns="https://www.w3.org/2000/svg"
-                        viewBox = "0 0 24 24"
-                        width="50"
-                        height="50"
-                        fill="none"
-                        stroke="black"
-                        strokeWidth="2"
-                    >
-                        <line x1="6" y1="18" x2 ="18" y2="6"/>
-                        <polyline points="9 6 18 6 18 15"/>
+                        </svg>
 
-                    </svg>
-                </div>
-                    
-                </div>
-            </a>
+                        <div className="arrow">
+                            <svg
+                                xmlns="https://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                width="50"
+                                height="50"
+                                fill="none"
+                                stroke="black"
+                                strokeWidth="2"
+                            >
+                                <line x1="6" y1="18" x2="18" y2="6" />
+                                <polyline points="9 6 18 6 18 15" />
+
+                            </svg>
+                        </div>
+
+                    </motion.div>
+                </motion.a>
 
             </div>
             <div className="bg">
-                <img src="/hero.png" alt=""/>
+                <img src="/hero.png" alt="" />
             </div>
         </div>
     )
