@@ -1,7 +1,9 @@
+
 import Hero from "./components/hero/Hero";
 import Services from "./components/services/Services";
 import Portifolio from "./components/portifolio/Portifolio";
 import Contact from "./components/contact/Contact"
+import Shape from "./components/hero/Shape";
 
 
 const App = () => {
@@ -24,4 +26,13 @@ const App = () => {
   )
 }
 
-export default App
+const test = () => {
+  return(
+    <div className="container">
+      <Shape/>
+    </div>
+  )
+}
+
+export default App;
+
