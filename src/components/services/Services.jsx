@@ -1,6 +1,43 @@
 import "./services.css";
 import MacbookContainer from "./cpu/MacbookContainer";
+import CrownContainer from "./crown/CrownContainer";
+import HatContainer from "./hat/HatContainer";
 import Counter from "./Counter";
+import { motion, useInView } from "motion/react"
+import { useRef, useState } from "react"
+
+const textVariants = {
+    initial: {
+        x: -100,
+        y:-100,
+        opacity: 0,
+    },
+    animate: {
+        x: 0,
+        y:0,
+        opacity: 1,
+        transition: {
+            duration: 1,
+        },
+    },
+}
+
+const listVariants = {
+    initial: {
+        x: -100,
+        opacity: 0,
+    },
+
+    animate: {
+        x: 0,
+        opacity: 1,
+        transition: {
+            duration: 1,
+            staggerChildren: 0.5
+        },
+    },
+
+}
 
 const service =[
     {
@@ -25,13 +62,32 @@ const service =[
 ]
 
 const Services = () => {
+    const [currentSeviceId, setCurrentServiceId] = useState(1);
+    const ref = useRef();
+    const isInView = useInView(ref, {margin: "-200px"});
+
     return (
-        <div className="services">
+        <div className="services" ref={ref}>
             <div className="sSection left">
-                <h1 className="sTitle">Como posso ajudar?</h1>
-                <div className="serviceList">
+                <motion.h1
+                    variants = { textVariants}
+                    animate = {isInView ? "animate": "initial"}
+                    className="sTitle"
+                >
+                    Como posso ajudar?
+                </motion.h1>
+                <motion.div 
+                    variants = {listVariants}
+                    animate = {isInView ? "animate": "initial"}
+                    className="serviceList"
+                >
                     {service.map((service) => (
-                        <div className="service" key={service.id}>
+                        <motion.div 
+                            variants = {listVariants}
+                            className="service" 
+                            key={service.id}
+                            onClick={() => setCurrentServiceId(service.id)}
+                        >   
 
                             <div className="serviceIcon">
                                 <img src={service.img} alt="" />
@@ -42,10 +98,10 @@ const Services = () => {
                                 <h3>{service.counter} Projetos</h3>
                             </div>
 
-                        </div>
+                        </motion.div>
                     ))}
 
-                </div>
+                </motion.div>
 
                 <div className="counterList">
                     <Counter from={0} to={104} text="Projetos Completos"/>
@@ -54,7 +110,11 @@ const Services = () => {
             </div>
 
             <div className="sSection right">
-                <MacbookContainer/>
+                +{currentServiceId === 1 ?(
+                    <MacbookContainer/>
+                ) : currentServiceId === 2 ? (
+                    
+                )}
             </div>
         </div>
     )
