@@ -62,7 +62,7 @@ const service =[
 ]
 
 const Services = () => {
-    const [currentSeviceId, setCurrentServiceId] = useState(1);
+    const [currentServiceId, setCurrentServiceId] = useState(1);
     const ref = useRef();
     const isInView = useInView(ref, {margin: "-200px"});
 
@@ -110,11 +110,14 @@ const Services = () => {
             </div>
 
             <div className="sSection right">
-                +{currentServiceId === 1 ?(
+                {currentServiceId === 1 ?(
                     <MacbookContainer/>
                 ) : currentServiceId === 2 ? (
-                    
-                )}
+                    <CrownContainer/>
+                ) : (
+                    <HatContainer/>
+                )
+                }
             </div>
         </div>
     )

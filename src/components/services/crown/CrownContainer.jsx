@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber"
 import { Suspense } from "react"
-import { CrownContainer } from "./Crown"
+import { Crown } from "./Crown"
 import { OrbitControls, Stage, PerspectiveCamera } from "@react-three/drei"
 
 const CrownContainer = () => {
