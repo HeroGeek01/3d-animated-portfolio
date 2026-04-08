@@ -1,4 +1,3 @@
-
 import Hero from "./components/hero/Hero";
 import Services from "./components/services/Services";
 import Portifolio from "./components/portifolio/Portifolio";
@@ -15,21 +14,11 @@ const App = () => {
       <section id = "#services">
         <Services/>
       </section>
-      <section id = "#portifolio">
-         <Portifolio/>
-      </section>
-     <section id = "#contact">
+      <Portifolio/>
+      <section id = "#contact">
         <Contact/>
-     </section>
+      </section>
 
-    </div>
-  )
-}
-
-const test = () => {
-  return(
-    <div className="container">
-      <Shape/>
     </div>
   )
 }

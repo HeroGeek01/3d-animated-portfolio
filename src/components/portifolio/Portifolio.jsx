@@ -1,74 +1,185 @@
-import { div, title } from "motion/react-client";
+import { useState, useEffect, useRef } from "react";
 import "./portifolio.css";
+import { motion, useInView, useScroll, useTransform } from "motion/react";
 
-const items =[
+const items = [
     {
         id: 1,
         img: "/p1.jpg",
-        title: "Full Stack Blog Application",
-        desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure laboriosam tempore consectetur.",
-        link: "/",
-
+        title: "Full Stack",
+        desc: "Lorem Ipsum",
+        link: "/"
     },
     {
         id: 2,
         img: "/p2.jpg",
-        title: "School Management System",
-        desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure laboriosam tempore consectetur.",
-        link: "/",
+        title: "Gerencia de Escola",
+        desc: "Lorem Ipsum",
+        link: "/"
     },
-
     {
         id: 3,
         img: "/p3.jpg",
-        title: "Real-time Chat Application",
-        desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure laboriosam tempore consectetur.",
-        link: "/",
+        title: "Chat Bot",
+        desc: "Lorem Ipsum",
+        link: "/"
     },
-
     {
         id: 4,
         img: "/p4.jpg",
-        title: "Social Media Project",
-        desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure laboriosam tempore consectetur.",
-        link: "/",
+        title: "Rede Social",
+        desc: "Lorem Ipsum",
+        link: "/"
     },
-
     {
         id: 5,
         img: "/p5.jpg",
-        title: "Animated Portifolio Website",
-        desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure laboriosam tempore consectetur.",
-        link: "/",
-    },
-]
+        title: "Site PHP",
+        desc: "Lorem Ipsum",
+        link: "/"
+    }
+];
 
-const ListItem = ({item}) => {
-    return(
-        <div className = "pItem">
-            <div className = "pImg">
-                <img src="{item.img}" alt="" />
-            </div>
-            <div className = "pText">
-                <h1>{item.title}</h1>
-                <p>{item.desc}</p>
-                <a href={item.link}>
-                    <button>View Project</button>
-                </a>
-            </div>
+const imgVariants = {
+    intial: {
+        x: -500,
+        y: 500,
+        opacity: 0,
+    },
+    animate: {
+        x: 0,
+        y: 0,
+        opacity: 1,
+        transition: {
+            duration: 0.5,
+            ease: "easeInOut",
+        },
+    }
+}
+
+const textVariants = {
+    intial: {
+        x: 500,
+        y: 500,
+        opacity: 0,
+    },
+    animate: {
+        x: 0,
+        y: 0,
+        opacity: 1,
+        transition: {
+            duration: 0.5,
+            ease: "easeInOut",
+            staggerChildren: 0.5,
+        },
+    }
+}
+
+const ListItem = ({ item }) => {
+    const ref = useRef();
+
+    const isInView = useInView(ref, { margin: "-100px" });
+
+    return (
+        <div className="pItem" ref={ref}>
+            <motion.div
+                variants={imgVariants}
+                animate={isInView ? "animate" : "initial"}
+                className="pImg"
+            >
+                <img src={item.img} alt="" />
+            </motion.div>
+
+            <motion.div
+                variants={textVariants}
+                animate={isInView ? "animate" : "initial"}
+                className="pText"
+            >
+                <motion.h1>{item.title}</motion.h1>
+                <motion.p>{item.desc}</motion.p>
+                <motion.a href={item.link}>
+                    <button> Ver Projeto </button>
+                </motion.a>
+            </motion.div>
         </div>
     )
 }
-const Portfolio = () => {
-    return ( 
-        <div className = "portfolio">
-            <div className ="pList">
-                {items.map(items => (
-                    <ListItem item ={item} key = {item.id}/>
+
+const Portifolio = () => {
+    const [containerDistance, setContainerDistance] = useState(0);
+
+    const ref = useRef();
+    
+    useEffect(() => {
+        const calculateDistance = () => {
+            if (ref.current) {
+                const rect = ref.current.getBoundingClientRect();
+                setContainerDistance(rect.left);
+            }
+        }
+        calculateDistance();
+
+        window.addEventListener("resize", calculateDistance);
+        return () => {
+            window.removeEventListener("resize", calculateDistance);
+        }
+    }, []);
+
+    const { scrollYProgress } = useScroll({target: ref});
+    const xTranslate = useTransform(
+        scrollYProgress,
+        [0, 1],
+        [0, -window.innerWidth * items.length],
+    );
+    return (
+        <div className="portfolio" ref={ref}>
+            <motion.div
+                className="pList"
+                style={{x: xTranslate}}
+            >
+                <div
+                    className="empty"
+                    style={{width: window.innerWidth - containerDistance}}
+                />
+
+                {items.map(item => (
+                    <ListItem item={item} key={item.id} />
                 ))}
+            </motion.div>
+            <section/>
+            <section/>
+            <section/>
+            <section/>
+            <section/>
+
+            <div className="pProgress">
+
+                <svg width = "100%" heigth = "100%" viewBox = "0 0 160 160">
+                    <circle
+                        cx = "80"
+                        cy = "80"
+                        r = "70"
+                        fill = "none"
+                        stroke = "#ddd"
+                        strokeWidth={20}                    
+                    />
+                    
+                    <motion.circle
+                        cx = "80"
+                        cy = "80"
+                        r = "70"
+                        fill = "none"
+                        stroke = "#dd4c62"
+                        strokeWidth={20}
+                        style = {{pathLength:scrollYProgress}} 
+                        transform="rotate( -90 80 80 )"                   
+                    />
+                </svg>
+            
             </div>
+
         </div>
     )
 };
 
-export default Portfolio;
+export default Portifolio;
