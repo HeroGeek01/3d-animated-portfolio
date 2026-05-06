@@ -3,6 +3,7 @@ import emailjs from "@emailjs/browser"
 import { span } from "motion/react-client";
 import { useRef, useState } from "react"
 import { motion, useInView } from "motion/react"
+import ContactSvg from "./ContactSVG";
 
  
 const listVariant = {
@@ -78,7 +79,9 @@ const Contact = () => {
 
                 </motion.form>
              </div>
-             <div className="cSection">SVG</div>
+             <div className="cSection">
+                    <ContactSvg/>
+             </div>
         </div>
     )
 };

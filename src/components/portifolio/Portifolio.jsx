@@ -1,47 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import "./portifolio.css";
-import { motion, useInView, useScroll, useTransform } from "motion/react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
 const items = [
-    {
-        id: 1,
-        img: "/p1.jpg",
-        title: "Full Stack",
-        desc: "Lorem Ipsum",
-        link: "/"
-    },
-    {
-        id: 2,
-        img: "/p2.jpg",
-        title: "Gerencia de Escola",
-        desc: "Lorem Ipsum",
-        link: "/"
-    },
-    {
-        id: 3,
-        img: "/p3.jpg",
-        title: "Chat Bot",
-        desc: "Lorem Ipsum",
-        link: "/"
-    },
-    {
-        id: 4,
-        img: "/p4.jpg",
-        title: "Rede Social",
-        desc: "Lorem Ipsum",
-        link: "/"
-    },
-    {
-        id: 5,
-        img: "/p5.jpg",
-        title: "Site PHP",
-        desc: "Lorem Ipsum",
-        link: "/"
-    }
+    { id: 1, img: "/p1.jpg", title: "Full Stack", desc: "Lorem Ipsum", link: "/" },
+    { id: 2, img: "/p2.jpg", title: "Gerencia de Escola", desc: "Lorem Ipsum", link: "/" },
+    { id: 3, img: "/p3.jpg", title: "Chat Bot", desc: "Lorem Ipsum", link: "/" },
+    { id: 4, img: "/p4.jpg", title: "Rede Social", desc: "Lorem Ipsum", link: "/" },
+    { id: 5, img: "/p5.jpg", title: "Site PHP", desc: "Lorem Ipsum", link: "/" }
 ];
 
 const imgVariants = {
-    intial: {
+    initial: {
         x: -500,
         y: 500,
         opacity: 0,
@@ -55,10 +25,10 @@ const imgVariants = {
             ease: "easeInOut",
         },
     }
-}
+};
 
 const textVariants = {
-    intial: {
+    initial: {
         x: 500,
         y: 500,
         opacity: 0,
@@ -70,116 +40,117 @@ const textVariants = {
         transition: {
             duration: 0.5,
             ease: "easeInOut",
-            staggerChildren: 0.5,
+            staggerChildren: 0.3,
         },
     }
-}
+};
 
 const ListItem = ({ item }) => {
     const ref = useRef();
-
-    const isInView = useInView(ref, { margin: "-100px" });
+    const isInView = useInView(ref, { margin: "-80px" });
 
     return (
         <div className="pItem" ref={ref}>
             <motion.div
                 variants={imgVariants}
+                initial="initial"
                 animate={isInView ? "animate" : "initial"}
                 className="pImg"
             >
-                <img src={item.img} alt="" />
+                <img src={item.img} alt={item.title} />
             </motion.div>
 
             <motion.div
                 variants={textVariants}
+                initial="initial"
                 animate={isInView ? "animate" : "initial"}
                 className="pText"
             >
                 <motion.h1>{item.title}</motion.h1>
                 <motion.p>{item.desc}</motion.p>
                 <motion.a href={item.link}>
-                    <button> Ver Projeto </button>
+                    <button>Ver Projeto</button>
                 </motion.a>
             </motion.div>
         </div>
-    )
-}
+    );
+};
 
 const Portifolio = () => {
     const [containerDistance, setContainerDistance] = useState(0);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     const ref = useRef();
-    
+
+    const isInView = useInView(ref, { margin: "-200px" })
+
     useEffect(() => {
-        const calculateDistance = () => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+
             if (ref.current) {
                 const rect = ref.current.getBoundingClientRect();
                 setContainerDistance(rect.left);
             }
-        }
-        calculateDistance();
+        };
 
-        window.addEventListener("resize", calculateDistance);
-        return () => {
-            window.removeEventListener("resize", calculateDistance);
-        }
+        handleResize();
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const { scrollYProgress } = useScroll({target: ref});
+    const { scrollYProgress } = useScroll({ target: ref });
+
     const xTranslate = useTransform(
         scrollYProgress,
         [0, 1],
-        [0, -window.innerWidth * items.length],
+        [0, -windowWidth * items.length]
     );
+
     return (
         <div className="portfolio" ref={ref}>
-            <motion.div
-                className="pList"
-                style={{x: xTranslate}}
-            >
+            <motion.div className="pList" style={{ x: xTranslate }}>
                 <div
                     className="empty"
-                    style={{width: window.innerWidth - containerDistance}}
+                    style={{ width: windowWidth - containerDistance }}
                 />
 
                 {items.map(item => (
                     <ListItem item={item} key={item.id} />
                 ))}
             </motion.div>
-            <section/>
-            <section/>
-            <section/>
-            <section/>
-            <section/>
 
-            <div className="pProgress">
+            {/* espaço para scroll */}
+            {items.map((_, i) => (
+                <section key={i} />
+            ))}
 
-                <svg width = "100%" heigth = "100%" viewBox = "0 0 160 160">
+            <div className="pProgress" style={{display: isInView ? "block" : "none"}}>
+                <svg width="100%" height="100%" viewBox="0 0 160 160">
                     <circle
-                        cx = "80"
-                        cy = "80"
-                        r = "70"
-                        fill = "none"
-                        stroke = "#ddd"
-                        strokeWidth={20}                    
-                    />
-                    
-                    <motion.circle
-                        cx = "80"
-                        cy = "80"
-                        r = "70"
-                        fill = "none"
-                        stroke = "#dd4c62"
+                        cx="80"
+                        cy="80"
+                        r="70"
+                        fill="none"
+                        stroke="#ddd"
                         strokeWidth={20}
-                        style = {{pathLength:scrollYProgress}} 
-                        transform="rotate( -90 80 80 )"                   
+                    />
+
+                    <motion.circle
+                        cx="80"
+                        cy="80"
+                        r="70"
+                        fill="none"
+                        stroke="#dd4c62"
+                        strokeWidth={20}
+                        style={{ pathLength:scrollYProgress }}
+                        transform="rotate(-90 80 80)"
                     />
                 </svg>
-            
             </div>
-
         </div>
-    )
+    );
 };
 
 export default Portifolio;
