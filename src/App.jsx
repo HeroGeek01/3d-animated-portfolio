@@ -1,23 +1,51 @@
-import Hero from "./components/hero/Hero";
-import Services from "./components/services/Services";
-import Portifolio from "./components/portifolio/Portifolio";
-import Contact from "./components/contact/Contact"
-import Shape from "./components/hero/Shape";
+// import Hero from "./components/hero/Hero";
+// import Services from "./components/services/Services";
+// import Portifolio from "./components/portifolio/Portifolio";
+// import Contact from "./components/contact/Contact"
+// import Shape from "./components/hero/Shape";
+
+import { lazy, Suspense } from "react";
+import LazyLoad from "react-lazyload";
+
+const Hero = lazy(()=> import("./components/hero/Hero"));
+const Services = lazy(()=> import("./components/services/Services"));
+const Portifolio = lazy(()=> import("./components/portifolio/Portifolio"));
+const Contact = lazy(()=> import("./components/contact/Contact"));
+
 
 
 const App = () => {
   return (
     <div className="container">
-      <section id = "#hero">
-        <Hero/>
-      </section>
-      <section id = "#services">
-        <Services/>
-      </section>
-      <Portifolio/>
-      <section id = "#contact">
-        <Contact/>
-      </section>
+      <Suspense fallback={"loading..."}>
+        <LazyLoad height = {"100vh"} offset = {-100}>
+          <section id = "#hero">
+            <Hero/>
+          </section>
+        </LazyLoad>
+      </Suspense>
+
+      <Suspense fallback={"loading..."}>
+        <LazyLoad height = {"100vh"} offset = {-100}>
+          <section id = "#services">
+            <Services/>
+          </section>
+        </LazyLoad>
+      </Suspense>
+      
+      <Suspense fallback={"loading..."}>
+        <LazyLoad height = {"600vh"} offset = {-100}>
+          <Portifolio/>
+        </LazyLoad>
+      </Suspense>
+      
+      <Suspense fallback={"loading..."}>
+        <LazyLoad height = {"100vh"} offset = {-100}>
+          <section id = "#contact">
+            <Contact/>
+          </section>
+        </LazyLoad>
+      </Suspense>
 
     </div>
   )

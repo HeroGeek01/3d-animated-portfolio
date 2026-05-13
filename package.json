@@ -17,6 +17,7 @@
     "motion": "^12.23.24",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-lazyload": "^3.2.1",
     "react-type-animation": "^3.2.0",
     "three": "^0.152.0"
   },
@@ -26,6 +27,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
+    "baseline-browser-mapping": "^2.10.29",
     "eslint": "^9.13.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
